@@ -1,0 +1,8 @@
+{"type":"server-started","port":58697,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:58697","screen_dir":"/home/wjz/Projects/2dgame/.superpowers/brainstorm/94870-1778927520/content","state_dir":"/home/wjz/Projects/2dgame/.superpowers/brainstorm/94870-1778927520/state"}
+{"type":"screen-added","file":"/home/wjz/Projects/2dgame/.superpowers/brainstorm/94870-1778927520/content/art-style.html"}
+{"source":"user-event","type":"click","text":"🗡️ 🛡️ 🧙‍♂️ 🏰\n        OpenGameArt.org / Kenney.nl\n      \n    \n    \n      C) 免费素材包混搭\n      从 Kenney.nl、OpenGameArt 等网站下载现成的角色、怪物、场景素材。风格统一性需要挑，但省大量时间。适合想快速出效果的人。","choice":"assets","id":null,"timestamp":1778927617873}
+{"source":"user-event","type":"click","text":"A) 像素风\n      经典复古感，像暗黑1、星露谷。大量免费素材包可用。学习成本低——不需要画功，用 Aseprite 或现成素材。","choice":"pixel","id":null,"timestamp":1778927620025}
+{"type":"screen-added","file":"/home/wjz/Projects/2dgame/.superpowers/brainstorm/94870-1778927520/content/waiting-1.html"}
+{"type":"screen-added","file":"/home/wjz/Projects/2dgame/.superpowers/brainstorm/94870-1778927520/content/camera-perspective.html"}
+{"type":"screen-added","file":"/home/wjz/Projects/2dgame/.superpowers/brainstorm/94870-1778927520/content/waiting-2.html"}
+{"type":"server-stopped","reason":"idle timeout"}

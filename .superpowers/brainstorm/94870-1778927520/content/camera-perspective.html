@@ -1,0 +1,77 @@
+<h2>游戏视角</h2>
+<p class="subtitle">视角决定了地图怎么画、角色怎么移动、战斗怎么做。这是技术上最重要的决定之一</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">A) 正俯视（Top-Down）</div>
+    <div class="mockup-body" style="background:#2d1b0e;padding:20px;position:relative;height:220px;">
+      <!-- Grid floor -->
+      <div style="position:absolute;top:20px;left:20px;right:20px;bottom:20px;background:#3d2b1e;border:2px solid #555;">
+        <!-- Grid lines -->
+        <div style="position:absolute;top:25%;left:0;right:0;height:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;top:75%;left:0;right:0;height:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;left:25%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;left:75%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1);"></div>
+        <!-- Player (circle) -->
+        <div style="position:absolute;top:45%;left:45%;width:30px;height:30px;background:#3498db;border-radius:50%;border:2px solid #2980b9;"></div>
+        <!-- Enemies (squares) -->
+        <div style="position:absolute;top:20%;left:60%;width:24px;height:24px;background:#e74c3c;border:2px solid #c0392b;"></div>
+        <div style="position:absolute;top:65%;left:30%;width:24px;height:24px;background:#e74c3c;border:2px solid #c0392b;"></div>
+        <div style="position:absolute;top:35%;left:20%;width:24px;height:24px;background:#e74c3c;border:2px solid #c0392b;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">B) 等距视角（Isometric / 2.5D）</div>
+    <div class="mockup-body" style="background:#2d1b0e;padding:20px;position:relative;height:220px;">
+      <!-- Isometric grid floor -->
+      <div style="position:absolute;top:30px;left:50%;transform:translateX(-50%);width:160px;height:160px;background:#3d2b1e;border:2px solid #555;transform:translateX(-50%) rotate(45deg) skewY(0deg);">
+        <!-- Grid lines -->
+        <div style="position:absolute;top:33%;left:0;right:0;height:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;top:66%;left:0;right:0;height:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;left:33%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="position:absolute;left:66%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1);"></div>
+      </div>
+      <!-- Player (standing on isometric) -->
+      <div style="position:absolute;top:50%;left:48%;width:24px;height:36px;background:#3498db;border-radius:12px 12px 4px 4px;border:2px solid #2980b9;"></div>
+      <!-- Enemies -->
+      <div style="position:absolute;top:35%;left:65%;width:20px;height:30px;background:#e74c3c;border-radius:10px 10px 4px 4px;border:2px solid #c0392b;"></div>
+      <div style="position:absolute;top:60%;left:35%;width:20px;height:30px;background:#e74c3c;border-radius:10px 10px 4px 4px;border:2px solid #c0392b;"></div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.05);border-radius:8px;">
+  <h3 style="margin-bottom:8px;">技术对比</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+      <td style="padding:8px;color:#aaa;">开发难度</td>
+      <td style="padding:8px;color:#2ecc71;">⭐ 简单</td>
+      <td style="padding:8px;color:#e74c3c;">⭐⭐ 中等偏难</td>
+    </tr>
+    <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+      <td style="padding:8px;color:#aaa;">素材匹配</td>
+      <td style="padding:8px;">任何正面/背面素材都行</td>
+      <td style="padding:8px;">必须是等距专用素材</td>
+    </tr>
+    <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+      <td style="padding:8px;color:#aaa;">碰撞检测</td>
+      <td style="padding:8px;">矩形碰撞，Godot 内置</td>
+      <td style="padding:8px;">需要手动算深度排序</td>
+    </tr>
+    <tr>
+      <td style="padding:8px;color:#aaa;">暗黑2风格</td>
+      <td style="padding:8px;">不太像</td>
+      <td style="padding:8px;">更接近暗黑2的感觉</td>
+    </tr>
+  </table>
+</div>
+
+<div style="margin-top:16px;padding:16px;background:rgba(255,255,255,0.05);border-radius:8px;">
+  <h3 style="margin-bottom:8px;">我的建议</h3>
+  <p style="color:#aaa;font-size:14px;"><strong>强烈推荐 A) 正俯视</strong>。你是零基础，等距视角的深度排序、素材匹配、碰撞计算会让你在第一个周末就卡住。正俯视能让你快速做出可玩版本——等你熟练了，随时可以加等距效果。</p>
+  <p style="color:#aaa;font-size:14px;">Vampire Survivors、Binding of Isaac 都是正俯视。它们不"低端"，只是选择了正确的技术难度。</p>
+</div>

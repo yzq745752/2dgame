@@ -1,0 +1,8 @@
+.gstack/
+
+# Godot 项目忽略规则
+.import/
+export.cfg
+export_presets.cfg
+*.translation
+*.uid

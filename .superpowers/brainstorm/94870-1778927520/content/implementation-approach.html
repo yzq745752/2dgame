@@ -1,0 +1,61 @@
+<h2>实现方案对比</h2>
+<p class="subtitle">三种从零基础到可玩版本的路径，难度和速度不同</p>
+
+<div class="cards">
+  <div class="card" data-choice="tutorial" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center;height:140px;">
+      <div style="text-align:center;">
+        <div style="font-size:36px;margin-bottom:8px;">📺</div>
+        <div style="font-size:14px;color:#aaa;">跟着教程一步步做</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A) 教程跟写法</h3>
+      <p>找一个完整的 Godot ARPG 教程系列（如 Brackeys），逐集跟着做，然后在此基础上改成你的刷宝游戏。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>✅ 优点</h4><ul><li>不会迷路，每一步都有指引</li><li>教程代码通常质量高</li></ul></div>
+        <div class="cons"><h4>❌ 缺点</h4><ul><li>教程是别人的设计，改成你的想法需要理解代码</li><li>容易变成"抄代码"而不是"学编程"</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="modular" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center;height:140px;">
+      <div style="text-align:center;">
+        <div style="font-size:36px;margin-bottom:8px;">🧩</div>
+        <div style="font-size:14px;color:#aaa;">一个系统一个系统地做</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B) 模块化跟写法（推荐）</h3>
+      <p>不跟完整教程。每个系统（移动、战斗、掉落、背包）单独搜教程/文档，学完一个做一个。最后拼起来。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>✅ 优点</h4><ul><li>真正理解每一段代码，因为是独立学的</li><li>自由度高，随时可以调整设计</li><li>学的是"怎么解决问题"而不是"怎么抄代码"</li></ul></div>
+        <div class="cons"><h4>❌ 缺点</h4><ul><li>需要自己拼合，偶尔会卡住</li><li>没有完整教程的"安全感"</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="fromscratch" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center;height:140px;">
+      <div style="text-align:center;">
+        <div style="font-size:36px;margin-bottom:8px;">🔨</div>
+        <div style="font-size:14px;color:#aaa;">从零开始自己写</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C) 纯自建法</h3>
+      <p>不看教程，只查 Godot 官方文档。遇到问题搜具体问题的答案，但不跟任何完整教程。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>✅ 优点</h4><ul><li>代码 100% 是自己的，理解最深</li><li>最接近真实开发体验</li></ul></div>
+        <div class="cons"><h4>❌ 缺点</h4><ul><li>对零基础来说效率极低，容易放弃</li><li>会踩很多前人已经踩过的坑</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.05);border-radius:8px;">
+  <h3 style="margin-bottom:8px;">我的建议</h3>
+  <p style="color:#aaa;font-size:14px;"><strong>B) 模块化跟写法</strong>——这是最适合你的路径。每个系统独立学习：移动看一个 15 分钟教程，掉落看另一个，背包看第三个。这样你既不会迷路，又真正理解了每一块代码。拼合时的"卡住"恰恰是学习最深刻的时刻。</p>
+  <p style="color:#aaa;font-size:14px;">A 的问题是你会学到别人的架构，改成你的刷宝系统时反而更痛苦。C 对零基础来说太残酷了。</p>
+</div>

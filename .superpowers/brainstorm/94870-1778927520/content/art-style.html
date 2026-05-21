@@ -1,0 +1,65 @@
+<h2>游戏美术风格</h2>
+<p class="subtitle">你希望你的游戏看起来像什么？这决定了你的视觉工作量和整体感觉</p>
+
+<div class="cards">
+  <div class="card" data-choice="pixel" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center;height:180px;">
+      <div style="display:grid;grid-template-columns:repeat(16,8px);grid-template-rows:repeat(16,8px);gap:0;">
+        <!-- Pixel art sword representation -->
+        <div style="grid-column:8/9;grid-row:1/2;background:#888;"></div>
+        <div style="grid-column:8/9;grid-row:2/3;background:#888;"></div>
+        <div style="grid-column:7/9;grid-row:3/4;background:#aaa;"></div>
+        <div style="grid-column:7/9;grid-row:4/5;background:#aaa;"></div>
+        <div style="grid-column:6/8;grid-row:5/6;background:#ccc;"></div>
+        <div style="grid-column:6/8;grid-row:6/7;background:#ccc;"></div>
+        <div style="grid-column:5/7;grid-row:7/8;background:#ddd;"></div>
+        <div style="grid-column:5/7;grid-row:8/9;background:#ddd;"></div>
+        <div style="grid-column:4/6;grid-row:9/10;background:#eee;"></div>
+        <div style="grid-column:4/6;grid-row:10/11;background:#eee;"></div>
+        <div style="grid-column:3/5;grid-row:11/12;background:#ddd;"></div>
+        <div style="grid-column:3/5;grid-row:12/13;background:#ddd;"></div>
+        <div style="grid-column:4/6;grid-row:13/14;background:#c8a45c;"></div>
+        <div style="grid-column:4/6;grid-row:14/15;background:#c8a45c;"></div>
+        <div style="grid-column:5/7;grid-row:15/16;background:#c8a45c;"></div>
+        <div style="grid-column:5/7;grid-row:16/17;background:#c8a45c;"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A) 像素风</h3>
+      <p>经典复古感，像暗黑1、星露谷。大量免费素材包可用。学习成本低——不需要画功，用 Aseprite 或现成素材。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="simple" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center;height:180px;gap:20px;">
+      <!-- Simple geometric shapes -->
+      <div style="width:40px;height:40px;background:#e74c3c;border-radius:50%;"></div>
+      <div style="width:40px;height:40px;background:#3498db;border-radius:4px;"></div>
+      <div style="width:40px;height:40px;background:#2ecc71;clip-path:polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+      <div style="width:40px;height:40px;background:#f39c12;border-radius:50%;border:3px solid #e67e22;"></div>
+    </div>
+    <div class="card-body">
+      <h3>B) 简单几何图形</h3>
+      <p>圆形玩家、方形怪物、三角形道具。极简但有效——Vampire Survivors 早期版本就是这样。零美术成本，完全用代码生成。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="assets" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center;height:180px;">
+      <div style="text-align:center;color:#888;font-size:14px;">
+        <div style="font-size:48px;margin-bottom:8px;">🗡️ 🛡️ 🧙‍♂️ 🏰</div>
+        <div style="font-size:12px;color:#666;">OpenGameArt.org / Kenney.nl</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C) 免费素材包混搭</h3>
+      <p>从 Kenney.nl、OpenGameArt 等网站下载现成的角色、怪物、场景素材。风格统一性需要挑，但省大量时间。适合想快速出效果的人。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.05);border-radius:8px;">
+  <h3 style="margin-bottom:8px;">我的建议</h3>
+  <p style="color:#aaa;font-size:14px;">对于零基础的你，<strong>推荐 A 或 C</strong>。像素风有现成教程和素材，学习起来最直接。C 更快出效果，但风格统一性需要花时间挑。</p>
+  <p style="color:#aaa;font-size:14px;">B 适合"先做出来再说"的人——先用方块跑通所有逻辑，最后再换美术。这也是很多独立开发者的实际做法。</p>
+</div>
