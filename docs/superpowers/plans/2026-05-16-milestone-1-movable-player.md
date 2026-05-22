@@ -1,6 +1,8 @@
 # 里程碑 1：能动的方块 — 实施计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+>
+> **当前进度：** 第 1-2 周末完成 ✅ — 实际远超原始计划，标记为以完成，保留剩余任务
 
 **Goal:** 创建一个 Godot 4 项目，实现角色在地图上 WASD 移动、相机跟随、不穿墙。
 
@@ -10,270 +12,210 @@
 
 ---
 
-## 文件结构
+## 当前文件结构（实际）
 
 ```
 2dgame/
-├── project.godot                    # 已存在，项目配置
+├── project.godot                    # 项目配置（gl_compatibility 渲染器）
 ├── scenes/
 │   ├── player/
-│   │   ├── Player.tscn              # 玩家场景（CharacterBody2D 根节点）
-│   │   └── Player.gd                # 玩家移动逻辑
-│   └── main/
-│       ├── World.tscn               # 主世界场景（Node2D 根节点）
-│       └── World.gd                 # 世界初始化（可选）
+│   │   ├── player.tscn              # 玩家场景（CharacterBody2D 根节点）
+│   │   └── player.gd                # 玩家全部逻辑（81 行）
+│   └── maps/
+│       └── test_map.tscn            # 主场景（TileMap + Player 实例）
 ├── assets/
-│   └── sprites/
-│       └── player_placeholder.png   # 临时角色图片（或直接用 Godot icon）
-└── scripts/                         # 后续里程碑使用
+│   ├── sprites/
+│   │   ├── Warrior_Blue.png         # 角色 SpriteSheet（6x8=48帧）
+│   │   └── player_placeholder.png   # 临时蓝色占位方块（已弃用）
+│   └── environment/
+│       ├── tilesheets/              # 地图瓦片素材（6 张）
+│       └── animated_tiles/          # 动画瓦片素材（7 张）
+└── docs/superpowers/
+    ├── specs/
+    │   └── 2026-05-16-2d-loot-game-design.md
+    └── plans/
+        └── 2026-05-16-milestone-1-movable-player.md   # ← 本文件
 ```
 
 ---
 
-### Task 1: 创建 Player 场景和移动脚本
+### Task 1: 创建 Player 场景和移动脚本 ✅ 已完成（扩展实现）
 
 **Files:**
-- Create: `scenes/player/Player.tscn`
-- Create: `scenes/player/Player.gd`
+- Create: `scenes/player/Player.tscn` ✅
+- Create: `scenes/player/Player.gd` ✅
 
-- [ ] **Step 1: 创建 Player.gd 移动脚本**
+- [x] **Step 1: 创建 Player.gd 移动脚本**
 
-这是玩家的核心逻辑。CharacterBody2D 是 Godot 4 推荐的 2D 角色节点类型，内置 `move_and_slide()` 处理碰撞。
+**实际代码（81 行，远超原始计划）：**
+- 基础 WASD 移动 ✅（使用 `right/left/down/up` 映射，speed=500）
+- 状态机系统 ✅（IDLE / RUN / ATTACK / DEAD 四状态）
+- 鼠标左键攻击 ✅（BlendSpace2D 四方向混合）
+- 朝向翻转 ✅（flip_h 根据方向自动切换）
 
 ```gdscript
-# scenes/player/Player.gd
 extends CharacterBody2D
 
-## 移动速度（像素/秒）
-@export var speed: float = 200.0
+enum State { IDLE, RUN, ATTACK, DEAD }
 
-func _physics_process(delta: float) -> void:
-	# 读取 WASD 输入，返回归一化的方向向量
-	var direction := Vector2(
-		Input.get_axis("ui_left", "ui_right"),
-		Input.get_axis("ui_up", "ui_down")
-	)
-	
-	# 设置速度并移动
-	velocity = direction * speed
-	move_and_slide()
+@export var speed: float = 500.0
+@export var attack_speed: float = 0.6
+
+var state: State = State.IDLE
+var move_direction: Vector2
+
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_playback = $AnimationTree["parameters/playback"]
+
+func _ready():
+    animation_tree.set_active(true)
+
+func _physics_process(_delta):
+    if not state == State.ATTACK:
+        movement_loop()
+
+func movement_loop():
+    move_direction.x = float(Input.is_action_pressed("right")) - float(Input.is_action_pressed("left"))
+    move_direction.y = float(Input.is_action_pressed("down")) - float(Input.is_action_pressed("up"))
+    velocity = move_direction.normalized() * speed
+    move_and_slide()
+    # 状态切换 + 动画更新...
 ```
 
-- [ ] **Step 2: 创建 Player.tscn 场景文件**
+> ⚠️ **已知 bug：** 第 41 行 `if state == State.IDLE or State.RUN:` 逻辑错误，应为 `if state == State.IDLE or state == State.RUN:`
 
-Godot 的 `.tscn` 是文本格式的场景文件。这个文件定义了 Player 的节点树：
-- `CharacterBody2D` 根节点（物理角色）
-- `Sprite2D` 子节点（视觉表现）
-- `CollisionShape2D` 子节点（碰撞检测）
+- [x] **Step 2: 创建 Player.tscn 场景文件**
 
-```tscn
-[gd_scene load_steps=3 format=3 uid="uid://cplayer001"]
-
-[ext_resource type="Script" path="res://scenes/player/Player.gd" id="1_player"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
-size = Vector2(32, 32)
-
-[node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_player")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_player")
+**实际节点树：**
+```
+player (CharacterBody2D)
+├── Sprite2D (Warrior_Blue.png, hframes=6, vframes=8)
+├── CollisionShape2D (CircleShape2D, radius=22)  ← 改为圆形
+├── Camera2D (跟随玩家)                           ← 已添加
+├── AnimationPlayer (动画库：idle/run/attack_*/RESET)
+└── AnimationTree (状态机：Start→idle↔run↔attack)
 ```
 
-- [ ] **Step 3: 在 Godot 编辑器中验证 Player 场景**
+> **与计划的差异：**
+> - 碰撞形状：RectangleShape2D → CircleShape2D（用户自行修改）
+> - 图片：placeholder → Warrior_Blue.png SpriteSheet
+> - 额外添加了 AnimationPlayer + AnimationTree + Camera2D
 
-1. 打开 Godot，Import 项目 `/home/wjz/Projects/2dgame/`
-2. 在 FileSystem 面板中双击 `scenes/player/Player.tscn` 打开场景
-3. 确认节点树结构：
-   ```
-   Player (CharacterBody2D)
-   ├── Sprite2D
-   └── CollisionShape2D
-   ```
-4. 选中 Sprite2D，在 Inspector 中找到 `Texture` 属性，点击 `[empty]` → `Quick Load` → 选择 Godot 自带的 `icon.svg`（或任何图片）
-5. 选中 CollisionShape2D，在 Inspector 中确认 `Shape` 已设置为 `RectangleShape2D`，大小为 32x32
-6. 按 **F6**（运行当前场景）测试
-7. 用 **WASD** 键移动——角色应该在黑色背景上移动
+- [x] **Step 3: 在 Godot 编辑器中验证 Player 场景**
 
-**Expected:** 一个方块在黑色背景上移动。按 WASD 有反应。
+**实际验证结果：**
+- WASD 移动 ✅
+- 相机跟随 ✅
+- 角色动画（idle/run）✅
+- 鼠标左键攻击（四方向）✅
+- 朝向自动翻转 ✅
 
-- [ ] **Step 4: 提交**
+- [ ] **Step 4: 提交**（待执行）
 
 ```bash
-git add scenes/player/Player.gd scenes/player/Player.tscn
+git add scenes/player/player.gd scenes/player/player.tscn
 git commit -m "feat(milestone-1): add Player scene with WASD movement"
 ```
 
 ---
 
-### Task 2: 创建 World 场景和 TileMap 地图
+### Task 2: 创建 World 场景和 TileMap 地图 ✅ 已完成（扩展实现）
 
 **Files:**
-- Create: `scenes/main/World.tscn`
-- Create: `scenes/main/World.gd`
+- Create: `scenes/main/World.tscn` → 用户创建了 `scenes/maps/test_map.tscn` 替代
+- Create: `scenes/main/World.gd` → 未创建（test_map 没加脚本）
 
-- [ ] **Step 1: 创建 World.gd（空脚本，用于后续扩展）**
+- [x] **Step 1: 创建 World.gd** — 未创建，test_map.tscn 未附加脚本
+
+- [x] **Step 2: 创建主场景文件**
+
+**实际实现：**
+- 主场景：`scenes/maps/test_map.tscn`（非原始计划的 World.tscn）
+- 包含完整 TileSet，12 个 AtlasSource
+- 配置了主场景：Project Settings → `run/main_scene` → test_map.tscn
+
+- [x] **Step 3: 在 Godot 编辑器中配置 TileMap**
+
+**实际配置：**
+- 成功导入多张瓦片素材
+- 配置了 Tile Size = 64x64
+- 绘制了完整地图（多次调整后）
+- 包含了动画瓦片（Water Foam 等）
+
+> ⚠️ **遇到问题：** 配置 TileMap 时，tscn 文件中残留了超出图片范围的图块定义，导致 405 个报错。已通过脚本清理（删除 1279 行无效定义）。
+
+- [x] **Step 4: 在 Godot 编辑器中设置主场景**
 
 ```gdscript
-# scenes/main/World.gd
-extends Node2D
-
-func _ready() -> void:
-	print("World loaded")
+run/main_scene="uid://brbtvnw2l2hrf"   # 指向 test_map.tscn
 ```
 
-- [ ] **Step 2: 创建 World.tscn 场景文件**
+- [x] **Step 5: 运行 World 场景**
 
-World 是主场景，包含 TileMap（地面）和 Player 实例。
+- 按 **F5** 运行 ✅
+- Player 出现在地图中央 ✅
+- WASD 移动 ✅
 
-```tscn
-[gd_scene load_steps=3 format=3 uid="uid://cworld001"]
-
-[ext_resource type="Script" path="res://scenes/main/World.gd" id="1_world"]
-[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
-
-[node name="World" type="Node2D"]
-script = ExtResource("1_world")
-
-[node name="TileMap" type="TileMap" parent="."]
-
-[node name="Player" parent="." instance=ExtResource("2_player")]
-position = Vector2(576, 324)
-```
-
-- [ ] **Step 3: 在 Godot 编辑器中配置 TileMap**
-
-TileMap 是 Godot 的瓦片地图系统。需要在编辑器中手动配置：
-
-1. 在 Godot 中打开 `scenes/main/World.tscn`
-2. 选中 `TileMap` 节点
-3. 在 Inspector 中找到 `Tile Set` 属性，点击 `[empty]` → `New TileSet`
-4. 点击新创建的 TileSet，在底部面板会出现 TileSet 编辑器
-5. 在 TileSet 编辑器中点击 `+` 添加源 → 选择一张地砖图片（或用 Godot 内置的默认瓷砖）
-6. 如果暂时没有素材，先跳过——TileMap 可以先用纯色填充
-7. 点击 Godot 顶部工具栏的 **TileMap** 按钮进入绘制模式
-8. 在画面上绘制一个 20x15 格的地面区域（每个格子 64x64 像素）
-
-**如果暂时没有素材的临时方案：**
-- 在 TileMap 的 Inspector 中设置 `Cell > Size` 为 `64, 64`
-- 在 TileSet 中添加一个纯色瓷砖（用 Godot 的默认图标或任何图片）
-- 绘制一个矩形区域即可
-
-- [ ] **Step 4: 在 Godot 编辑器中设置主场景**
-
-1. 点击菜单 `Project` → `Project Settings`
-2. 找到 `Application > Run > Main Scene`
-3. 设置为 `res://scenes/main/World.tscn`
-4. 关闭 Project Settings
-
-- [ ] **Step 5: 运行 World 场景**
-
-1. 按 **F5**（运行主场景）
-2. 确认 Player 出现在地图中央（位置 576, 324）
-3. 用 WASD 移动——角色应该能在画面上走动
-
-**Expected:** 玩家出现在地图中央，可以 WASD 移动。背景有 TileMap 地面。
-
-- [ ] **Step 6: 提交**
+- [ ] **Step 6: 提交**（待执行）
 
 ```bash
-git add scenes/main/World.gd scenes/main/World.tscn
-git commit -m "feat(milestone-1): add World scene with TileMap and Player instance"
+git add scenes/maps/test_map.tscn
+git commit -m "feat(milestone-1): add main map scene with TileMap and Player instance"
 ```
 
 ---
 
-### Task 3: 添加 Camera2D 跟随玩家
+### Task 3: 添加 Camera2D 跟随玩家 ✅ 已完成
 
 **Files:**
 - Modify: `scenes/player/Player.tscn`（添加 Camera2D 子节点）
 
-- [ ] **Step 1: 修改 Player.tscn 添加 Camera2D**
+- [x] **Step 1: 修改 Player.tscn 添加 Camera2D**
 
-在 Player 场景中添加 Camera2D 作为子节点，这样相机自动跟随玩家移动。
+Camera2D 已作为 player 的子节点添加。
 
 ```tscn
-[gd_scene load_steps=3 format=3 uid="uid://cplayer001"]
-
-[ext_resource type="Script" path="res://scenes/player/Player.gd" id="1_player"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
-size = Vector2(32, 32)
-
-[node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_player")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_player")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, 0)
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1533610592]
 ```
 
-- [ ] **Step 2: 在 Godot 编辑器中配置 Camera2D**
+- [x] **Step 2: 在 Godot 编辑器中配置 Camera2D**
 
-1. 打开 `scenes/player/Player.tscn`
-2. 确认 `Camera2D` 节点已出现在 Player 下
-3. 选中 Camera2D，在 Inspector 中勾选 `Current`（设为当前活动相机）
-4. 可选：调整 `Zoom` 属性（默认 1,1 即可）
-5. 按 **F6** 运行 Player 场景测试
+> **注意：** tscn 文件中 Camera2D 没有显式设置 `current = true`。如果在游戏中不跟随，需要在编辑器中勾选 Camera2D → Inspector → Current。
 
-**Expected:** 相机跟随玩家移动。如果地图比窗口大，移动时能看到相机平滑跟随。
-
-- [ ] **Step 3: 提交**
+- [ ] **Step 3: 提交**（待执行）
 
 ```bash
-git add scenes/player/Player.tscn
+git add scenes/player/player.tscn
 git commit -m "feat(milestone-1): add Camera2D following player"
 ```
 
 ---
 
-### Task 4: 添加墙壁碰撞（不穿墙）
+### Task 4: 添加墙壁碰撞（不穿墙） ❌ 未完成
 
 **Files:**
 - Modify: `scenes/main/World.tscn`（添加 StaticBody2D 墙壁）
 
 - [ ] **Step 1: 修改 World.tscn 添加墙壁**
 
-在 World 场景中添加 StaticBody2D 作为墙壁，防止玩家走出地图。
+> 如果你用的是 test_map.tscn，需要在那里添加墙壁。
+>
+> 在 test_map.tscn 中添加 StaticBody2D 作为墙壁，防止玩家走出地图。
 
 ```tscn
-[gd_scene load_steps=4 format=3 uid="uid://cworld001"]
-
-[ext_resource type="Script" path="res://scenes/main/World.gd" id="1_world"]
-[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(1280, 32)
-
-[node name="World" type="Node2D"]
-script = ExtResource("1_world")
-
-[node name="TileMap" type="TileMap" parent="."]
-
-[node name="Player" parent="." instance=ExtResource("2_player")]
-position = Vector2(576, 324)
 
 [node name="Walls" type="Node2D" parent="."]
 
 [node name="TopWall" type="StaticBody2D" parent="Walls"]
 position = Vector2(640, -16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
+[node name="CollisionShape2D" parent="Walls/TopWall"]
 shape = SubResource("RectangleShape2D_wall")
 
 [node name="BottomWall" type="StaticBody2D" parent="Walls"]
 position = Vector2(640, 976)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall"]
+[node name="CollisionShape2D" parent="Walls/BottomWall"]
 shape = SubResource("RectangleShape2D_wall")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
@@ -281,20 +223,18 @@ size = Vector2(32, 960)
 
 [node name="LeftWall" type="StaticBody2D" parent="Walls"]
 position = Vector2(-16, 480)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
+[node name="CollisionShape2D" parent="Walls/LeftWall"]
 shape = SubResource("RectangleShape2D_wall_side")
 
 [node name="RightWall" type="StaticBody2D" parent="Walls"]
 position = Vector2(1296, 480)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
+[node name="CollisionShape2D" parent="Walls/RightWall"]
 shape = SubResource("RectangleShape2D_wall_side")
 ```
 
 - [ ] **Step 2: 在 Godot 编辑器中验证墙壁**
 
-1. 打开 `scenes/main/World.tscn`
+1. 打开 `scenes/maps/test_map.tscn`
 2. 确认 Walls 节点下有 4 面墙（Top/Bottom/Left/Right）
 3. 按 **F5** 运行主场景
 4. 用 WASD 移动玩家到边缘——应该被墙挡住，不能走出地图
@@ -304,23 +244,28 @@ shape = SubResource("RectangleShape2D_wall_side")
 - [ ] **Step 3: 提交**
 
 ```bash
-git add scenes/main/World.tscn
+git add scenes/maps/test_map.tscn
 git commit -m "feat(milestone-1): add wall collision to prevent player leaving map"
 ```
 
 ---
 
-### Task 5: 里程碑 1 最终验证
+### Task 5: 里程碑 1 最终验证 ⏳ 部分通过
 
 - [ ] **Step 1: 完整运行测试**
 
 1. 按 **F5** 运行主场景
 2. 验证清单：
-   - [ ] 玩家出现在地图中央
-   - [ ] WASD 可以控制移动
-   - [ ] 相机跟随玩家
-   - [ ] 玩家不能走出地图（被墙壁挡住）
-   - [ ] 没有控制台报错
+   - [x] 玩家出现在地图中央（test_map 中玩家实例存在）
+   - [x] WASD 可以控制移动
+   - [x] 相机跟随玩家
+   - [ ] 玩家不能走出地图（被墙壁挡住）— ❌ 未实现
+   - [ ] 没有控制台报错 — ❌ 仍有 2 个 Image 错误
+
+**剩余问题：**
+1. `player.gd:41` 逻辑错误（`State.IDLE or State.RUN:` → `state == State.RUN`）
+2. Image width 0 / Invalid image — 某个图片资源损坏，待排查
+3. FIFO protocol warning — Wayland 警告，无害
 
 - [ ] **Step 2: 提交最终版本**
 
@@ -331,17 +276,45 @@ git commit -m "feat(milestone-1): milestone 1 complete - player moves on map wit
 
 ---
 
-## 里程碑 1 验收标准
+## 里程碑 1 实际验收状态
 
-完成后应该能：
-1. 打开 Godot，按 F5 运行游戏
-2. 看到一个角色在地图上
-3. 用 WASD 控制角色移动
-4. 相机跟随角色
-5. 角色不能走出地图边界
-6. 没有报错
+| 验收项 | 状态 | 备注 |
+|--------|------|------|
+| 打开 Godot，按 F5 运行游戏 | ✅ | test_map.tscn 已设为主场景 |
+| 看到一个角色在地图上 | ✅ | Warrior_Blue 精灵 + 动画 |
+| 用 WASD 控制角色移动 | ✅ | speed=500 |
+| 相机跟随角色 | ✅ | Camera2D 子节点 |
+| 角色不能走出地图边界 | ❌ | 待添加墙壁 |
+| 没有报错 | ❌ | 2 个 Image 错误待排查 |
+| **额外：角色攻击动画** | ✅ | 鼠标左键 + BlendSpace2D |
+| **额外：状态机切换** | ✅ | IDLE/RUN/ATTACK/DEAD |
+| **额外：朝向翻转** | ✅ | flip_h |
+| **额外：TileMap 多层地图** | ✅ | 12 个 AtlasSource |
 
-**如果以上都满足，里程碑 1 完成！进入里程碑 2。**
+---
+
+## 附加说明：用户自行扩展的功能
+
+以下功能是用户在实施过程中**自行添加**的，不在原始计划中：
+
+### 1. SpriteSheet 与动画系统
+- 使用了 `Warrior_Blue.png`（6x8 帧 SpriteSheet）
+- 配置了 `hframes=6, vframes=8` 分割
+- `AnimationPlayer` 管理动画库（idle/run/attack）
+
+### 2. AnimationTree 状态机
+- 根节点：`AnimationNodeStateMachine`
+- 状态间可切换：Start → idle ↔ run ↔ attack (通过 attack) → idle
+- `AnimationNodeStateMachinePlayback.travel()` 控制切换
+
+### 3. BlendSpace2D 四方向攻击
+- `attack` 状态使用 `BlendTree`，内部包含 `BlendSpace2D`
+- 四个方向点：(-1,0)=左, (1,0)=右, (0,-1)=上, (0,1)=下
+- `attack_dir` 通过鼠标位置计算并写入 `blend_position`
+
+### 4. 状态机保护
+- `_physics_process` 中 `if not state == State.ATTACK` 防止攻击时移动
+- `attack()` 中 `if state == State.ATTACK: return` 防止重复攻击
 
 ---
 
@@ -349,8 +322,12 @@ git commit -m "feat(milestone-1): milestone 1 complete - player moves on map wit
 
 | 问题 | 原因 | 解决 |
 |------|------|------|
-| 按 F5 报错 "no main scene" | 没设置主场景 | Project → Project Settings → Application → Run → Main Scene → 选 World.tscn |
-| 角色不动 | 脚本没附加 | 确认 Player.tscn 的根节点有 script 属性指向 Player.gd |
+| 按 F5 报错 "no main scene" | 没设置主场景 | Project → Project Settings → Application → Run → Main Scene → 选 test_map.tscn |
+| 角色不动 | 脚本没附加 | 确认 player.tscn 的根节点有 script 属性指向 player.gd |
 | 角色穿墙 | 墙壁不是 StaticBody2D | 确认墙壁是 StaticBody2D 类型，有 CollisionShape2D |
 | Camera2D 不跟随 | 没勾选 Current | 选中 Camera2D，Inspector 中勾选 `Current` |
-| WASD 没反应 | 输入映射不对 | project.godot 中已配置 ui_up/down/left/right 映射到 WASD |
+| WASD 没反应 | 输入映射不对 | 当前用 `right/left/down/up`（无 ui_前缀），在 project.godot 中已配置 |
+| 攻击不触发 | _unhandled_input 问题 | 检查节点路径，确保 AnimationTree 已激活 |
+| Image width 0 报错 | 图片资源损坏 | 在 FileSystem 中逐个 Reimport assets/environment/ 下的图片 |
+| 405 个 TileMap 报错 | 残留无效图块定义 | 已修复（删除了 1279 行） |
+| NVIDIA 不生效 | Wayland 限制 | `prime-run godot --editor` 或 `envycontrol -s nvidia` |

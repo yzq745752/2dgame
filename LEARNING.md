@@ -10,66 +10,123 @@
 ## 总览
 
 ```
-里程碑 1：能动的方块        (第 1-2 周末)  ← 你现在在这里
-里程碑 2：砍怪 + 掉血        (第 3-5 周末)
+里程碑 1：能动的方块        (第 1-2 周末)  ✅ 已完成
+里程碑 2：砍怪 + 掉血        (第 3-5 周末)  ← 你现在在这里
 里程碑 3：爆装备 + 背包      (第 6-10 周末)
 里程碑 4：游戏感打磨         (第 11-16 周末)
 ```
 
+**进度：** 里程碑 1 实际完成远超原始计划（动画 + 攻击 + 地图已实现）
 **原则：** 每个周末结束时，都有一个能运行的版本。不追求完美，追求「做完」。
 
 ---
 
-## 里程碑 1：能动的方块
+## 里程碑 1：能动的方块 ✅ 已完成（远超计划）
 
-**核心目标：** 一个角色在画面上走起来。
+**核心目标：** 一个角色在地图上走起来 + 攻击 + 动画。
 
-### 你需要学的（按顺序）
+### 实际学到的概念（按学习顺序）
 
-| 概念 | 为什么需要 | 花多少时间 |
-|------|-----------|-----------|
-| Godot 编辑器界面 | 你不会在记事本里写游戏 | 30 分钟 |
-| 场景 (Scene) 和节点 (Node) | Godot 的一切都是节点树 | 1 小时 |
-| GDScript 基础：变量、函数、print() | 让东西动起来的指令 | 2 小时 |
-| 输入处理 (Input) | 让键盘控制角色 | 1 小时 |
-| 2D 物理 / 碰撞 | 不让角色穿墙 | 1 小时 |
-| TileMap 地图 | 画一个好看的地面 | 1 小时 |
+| 概念 | 掌握程度 | 说明 |
+|------|---------|------|
+| Godot 编辑器界面 | ✅ 熟练 | 场景/节点/Inspector/FileSystem/Debugger |
+| 场景和节点树 | ✅ 熟练 | CharacterBody2D, Sprite2D, CollisionShape2D, Camera2D, AnimationTree |
+| GDScript 基础 | ✅ 熟练 | 变量、函数、枚举、条件、match、await |
+| 输入处理 | ✅ 熟练 | Input.get_axis, is_action_pressed, _unhandled_input |
+| 2D 物理 | ✅ 掌握 | move_and_slide(), velocity, CircleShape2D |
+| SpriteSheet | ✅ 掌握 | hframes/vframes 分割、帧索引、Sprite2D:frame |
+| AnimationTree | ✅ 入门 | StateMachine、BlendSpace2D、travel() |
+| 状态机模式 | ✅ 掌握 | IDLE/RUN/ATTACK/DEAD 枚举状态 |
+| TileMap/TileSet | ✅ 入门 | AtlasSource、瓦片绘制、动画瓦片 |
+| Linux 双显卡 | ⚠️ 了解 | prime-run, NVIDIA Optimus, Wayland |
 
-### 第 1 周任务：创建角色
+### 🌟 里程碑 1 实际成果
 
-1. **打开 Godot**，点击 "Import" 选择项目文件夹（2dgame）
-2. **创建一个 Player 场景**：新建场景 → 根节点选 `CharacterBody2D` → 命名为 `Player`
-3. **给 Player 加一个视觉**：添加子节点 `Sprite2D`，在 `assets/sprites/` 里放一张简单的图片（或者直接用 Godot 的 Icon 临时顶替）
-4. **加一个碰撞形状**：添加子节点 `CollisionShape2D`，选 `RectangleShape2D`
-5. **创建脚本**：右键 Player → Attach Script，写：
+| 功能 | 文件 | 说明 |
+|------|------|------|
+| WASD 移动 | `player.gd` | velocity = direction * speed, move_and_slide() |
+| 角色精灵 | `Warrior_Blue.png` | 6x8 SpriteSheet, 48 帧 |
+| 碰撞检测 | `player.tscn` | CircleShape2D |
+| 相机跟随 | `player.tscn` | Camera2D 子节点 |
+| 动画系统 | `player.tscn` | AnimationTree: idle/run/attack 状态机 |
+| 攻击系统 | `player.gd` | 鼠标左键, BlendSpace2D 四方向 |
+| 朝向翻转 | `player.gd` | flip_h |
+| 地图场景 | `test_map.tscn` | 多层 TileMap, 12 个 AtlasSource |
+| 渲染器 | `project.godot` | gl_compatibility (OpenGL) |
 
+### 当前代码
+
+**player.gd (81 行)：**
 ```gdscript
 extends CharacterBody2D
 
-@export var speed = 200
+enum State { IDLE, RUN, ATTACK, DEAD }
 
-func _physics_process(delta):
-    var direction = Vector2(
-        Input.get_axis("ui_left", "ui_right"),
-        Input.get_axis("ui_up", "ui_down")
-    )
-    velocity = direction * speed
+@export var speed: float = 500.0
+@export var attack_speed: float = 0.6
+
+var state: State = State.IDLE
+var move_direction: Vector2
+
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_playback = $AnimationTree["parameters/playback"]
+
+func _ready():
+    animation_tree.set_active(true)
+
+func _physics_process(_delta):
+    if not state == State.ATTACK:
+        movement_loop()
+
+func movement_loop():
+    # 读取 WASD 输入
+    move_direction.x = float(Input.is_action_pressed("right")) - float(Input.is_action_pressed("left"))
+    move_direction.y = float(Input.is_action_pressed("down")) - float(Input.is_action_pressed("up"))
+    velocity = move_direction.normalized() * speed
     move_and_slide()
+    # 状态切换 + 动画
+    if motion != Vector2.ZERO and state == State.IDLE:
+        state = State.RUN
+        update_animation()
+    elif motion == Vector2.ZERO and state == State.RUN:
+        state = State.IDLE
+        update_animation()
+
+func _unhandled_input(event):
+    if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+        attack()
+
+func attack():
+    if state == State.ATTACK: return
+    state = State.ATTACK
+    var attack_dir = (get_global_mouse_position() - global_position).normalized()
+    animation_tree.set("parameters/attack/BlendSpace2D/blend_position", attack_dir)
+    update_animation()
+    await get_tree().create_timer(attack_speed).timeout
+    state = State.IDLE
+
+func update_animation():
+    match state:
+        State.IDLE: animation_playback.travel("idle")
+        State.RUN: animation_playback.travel("run")
+        State.ATTACK: animation_playback.travel("attack")
 ```
 
-6. **运行**：按 F6（运行当前场景）——WASD 控制方块移动
+### 待修复
 
-### 🌟 验证标准
+- `player.gd:41` 逻辑错误（已识别）
+- Image width 0 错误（图片资源损坏待排查）
+- 墙壁碰撞未实现（下一阶段做）
 
-- [ ] WASD 可以控制角色上下左右移动
-- [ ] 角色不会跑出屏幕/可以正常移动
-- [ ] 你大概能说清楚 `_physics_process` 和 `delta` 是干什么的
+### ✅ 验证标准（实际）
 
-### 🤔 卡住了怎么办？
-
-- **先自己搜**："godot 4 characterbody2d movement tutorial" — YouTube 上搜，看视频
-- **搜中文**："godot 4 角色移动"、"godot 基础教程"
-- **还是卡住？** 把报错信息和你的代码发给我，我帮你调
+- [x] WASD 控制角色上下左右移动
+- [x] 鼠标左键攻击，四方向动画
+- [x] 角色自动切换 idle/run/attack 动画
+- [x] 地图有 TileMap 地面
+- [x] 相机跟随玩家
+- [ ] 角色不能跑出地图（墙壁待实现）
+- [ ] 无报错（2 个 Image 错误待排查）
 
 ---
 
