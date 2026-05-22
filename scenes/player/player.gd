@@ -25,7 +25,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		attack()
 	
 		
-func _physics_process(delta: float) -> void:	
+func _physics_process(_delta: float) -> void:	
 	if not state == State.ATTACK:
 		movement_loop()	
 	
