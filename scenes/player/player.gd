@@ -38,7 +38,7 @@ func movement_loop() -> void:
 	move_and_slide()
 
 	#Sprint flipping (only in idle/run)
-	if state == State.IDLE or State.RUN:
+	if state == State.IDLE or state == State.RUN:
 		if move_direction.x < -0.01:
 			$Sprite2D.flip_h = true
 		elif move_direction.x > 0.01:

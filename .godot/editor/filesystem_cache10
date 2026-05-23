@@ -1,45 +1,39 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1779356363
-LEARNING.md::TextFile::-1::1778926824::0::1::::<><><>0<>0<><>::
-::res://assets/::1779343003
-::res://assets/environment/::1770466187
-::res://assets/environment/animated_tiles/::1779424418
-Bushe1.png::CompressedTexture2D::2593393696284432437::1749694127::1779424418::1::::<><><>0<>0<>80f9dfabe6eb7e7b4461d5b5cdf76e03<>res://.godot/imported/Bushe1.png-44e9e2e5bbe990556c5f7c55e87aeb21.ctex::
-Bushe2.png::CompressedTexture2D::7024843221470072219::1749694136::1779424418::1::::<><><>0<>0<>b4ca6384742d3212e97769e261effe43<>res://.godot/imported/Bushe2.png-3472ee671049628212be62163123d32d.ctex::
-Bushe3.png::CompressedTexture2D::6359386011865002952::1749694146::1779424418::1::::<><><>0<>0<>7728d241a9037eeb50c5551e6c675088<>res://.godot/imported/Bushe3.png-040b7bc899987d26775896bb2542ef59.ctex::
-Props.png::CompressedTexture2D::1477404203879754694::1770466187::1779424418::1::::<><><>0<>0<>bdbe38eabb75d23d041482c08e203000<>res://.godot/imported/Props.png-2999b32bbe9cd51a55be1bc450504032.ctex::
-Tree3.png::CompressedTexture2D::7867964053048527520::1749764222::1779424418::1::::<><><>0<>0<>5c010bfb8763421cf66c1dff2ff868fe<>res://.godot/imported/Tree3.png-2a597b8bdb26604c432a73de67c1df7c.ctex::
-Tree4.png::CompressedTexture2D::2919905848172428125::1749693986::1779424418::1::::<><><>0<>0<>cfb5469390f7ed8d01fa2a48e3db6e9c<>res://.godot/imported/Tree4.png-4079f7defb0b1835768c06ae79b3d2dd.ctex::
-Water Foam.png::CompressedTexture2D::4291617368086461478::1760028423::1779424418::1::::<><><>0<>0<>db66bcdabe337236b256984cedbd401e<>res://.godot/imported/Water Foam.png-8aef7db5aae548fe2b4f070f6394a7ef.ctex::
-Water Rocks_02.png::CompressedTexture2D::3904297735641512789::1760028706::1779424418::1::::<><><>0<>0<>b0418aa92b44fe5185cdf365c1c2f3f5<>res://.godot/imported/Water Rocks_02.png-2e6bd18082989e31f0f60a4f833f2113.ctex::
-::res://assets/environment/props/::1770466187
-::res://assets/environment/props/clouds/::1770466187
-::res://assets/environment/textures/::1770466187
-::res://assets/environment/tilesheets/::1779424418
-NavMeshPainter.png::CompressedTexture2D::1212233456495996055::1770466187::1779424418::1::::<><><>0<>0<>bc65c83748d975146ba19826400db12b<>res://.godot/imported/NavMeshPainter.png-f971d0fc5feb84369c9fc573a7d7880e.ctex::
-Props.png::CompressedTexture2D::4372110041334809551::1770466187::1779424418::1::::<><><>0<>0<>4168438b6098417ef2c8a5b09f2bb58a<>res://.godot/imported/Props.png-609c2e42f7f9893b51b8baa0d7cd7a08.ctex::
-Shadow.png::CompressedTexture2D::5729497411610090136::1760028312::1779424418::1::::<><><>0<>0<>f156dd9bb7b16fc39be057e317a2b384<>res://.godot/imported/Shadow.png-290f02257028e35d7bd77c1999be5f5b.ctex::
-Tilemap_color1.png::CompressedTexture2D::5579438573024949306::1765230900::1779424418::1::::<><><>0<>0<>5175b5f4cfd2bf29cc7550014da6c20c<>res://.godot/imported/Tilemap_color1.png-8461b7ee9fa55b6a75527551bfb3856b.ctex::
-Tilemap_color3.png::CompressedTexture2D::8516012850446814847::1765231003::1779424418::1::::<><><>0<>0<>ea664388c908395cc3096b50475011aa<>res://.godot/imported/Tilemap_color3.png-6005846a9ea70d723896e1981ef813bb.ctex::
-Water Background color.png::CompressedTexture2D::2958026784498486308::1749743531::1779424418::1::::<><><>0<>0<>311e8ea013b8620a3876032c1507a49a<>res://.godot/imported/Water Background color.png-75495a6837ab6d858f33df3a3930b72f.ctex::
-::res://assets/fonts/::1778926794
-::res://assets/sprites/::1779424418
-player_placeholder.png::CompressedTexture2D::8094126043308555442::1779288793::1779424418::1::::<><><>0<>0<>693191ef2d75e1c9cd0aa4af94525106<>res://.godot/imported/player_placeholder.png-607694e0099b13c74ec004143f3ddec2.ctex::
-Warrior_Blue.png::CompressedTexture2D::6313371520407482256::1770466187::1779424418::1::::<><><>0<>0<>b59cadea9f8da4336a5132edad7d9832<>res://.godot/imported/Warrior_Blue.png-a8294bf214166c999e7ea55a7726ecb5.ctex::
-::res://docs/::1778938222
-::res://docs/superpowers/::1778938744
-::res://docs/superpowers/plans/::1778938821
-2026-05-16-milestone-1-movable-player.md::TextFile::-1::1778938821::0::1::::<><><>0<>0<><>::
-::res://docs/superpowers/specs/::1778938282
-2026-05-16-2d-loot-game-design.md::TextFile::-1::1778938282::0::1::::<><><>0<>0<><>::
-::res://scenes/::1779351992
-::res://scenes/enemy/::1778926794
-::res://scenes/items/::1778926794
-::res://scenes/main/::1778926846
-::res://scenes/maps/::1779352142
-test_map.tscn::PackedScene::3582887245860052043::1779424031::0::1::::<><><>0<>0<><>::uid://bie5je6rbreim::::res://assets/environment/tilesheets/Water Background color.png<>uid://b2e5kttc6yxik::::res://assets/environment/animated_tiles/Water Foam.png<>uid://bvvjhis2bwfa8::::res://assets/environment/animated_tiles/Water Rocks_02.png<>uid://dtlhqtqoblgjn::::res://assets/environment/tilesheets/Tilemap_color3.png<>uid://cnvn8q8oa4cbg::::res://assets/environment/tilesheets/Shadow.png<>uid://clqyskcys36ne::::res://assets/environment/tilesheets/Tilemap_color1.png<>uid://bc7i2ypxwxb1f::::res://assets/environment/animated_tiles/Bushe1.png<>uid://c7c5e2ud242fn::::res://assets/environment/animated_tiles/Bushe2.png<>uid://cwusfnht51dwa::::res://assets/environment/animated_tiles/Bushe3.png<>uid://vbwvp5ao146e::::res://assets/environment/animated_tiles/Props.png<>uid://dkdkhorftoxyu::::res://assets/environment/animated_tiles/Tree3.png<>uid://bhuoomwommc42::::res://assets/environment/animated_tiles/Tree4.png<>uid://dvk7r7aq3qb2m::::res://scenes/player/player.tscn
-::res://scenes/player/::1779342461
-player.gd::GDScript::912888985064530383::1779424415::0::1::::<>CharacterBody2D<><>0<>0<><>::
-player.tscn::PackedScene::8655846528795710822::1779342461::0::1::::<><><>0<>0<><>::uid://nahfblhmx3rf::::res://scenes/player/player.gd<>uid://cv7ikomqo7p41::::res://assets/sprites/Warrior_Blue.png
-::res://scenes/ui/::1778926794
-::res://scripts/::1778926794
+::res://::1779546400
+LEARNING.md::TextFile::-1::1779431070::0::1::::<><><>0<>0<><>::
+::res://assets/::1779431070
+::res://assets/environment/::1779431070
+::res://assets/environment/animated_tiles/::1779431122
+Bushe1.png::CompressedTexture2D::2593393696284432437::1779431070::1779431122::1::::<><><>0<>0<>80f9dfabe6eb7e7b4461d5b5cdf76e03<>res://.godot/imported/Bushe1.png-44e9e2e5bbe990556c5f7c55e87aeb21.ctex::
+Bushe2.png::CompressedTexture2D::7024843221470072219::1779431070::1779431122::1::::<><><>0<>0<>b4ca6384742d3212e97769e261effe43<>res://.godot/imported/Bushe2.png-3472ee671049628212be62163123d32d.ctex::
+Bushe3.png::CompressedTexture2D::6359386011865002952::1779431070::1779431122::1::::<><><>0<>0<>7728d241a9037eeb50c5551e6c675088<>res://.godot/imported/Bushe3.png-040b7bc899987d26775896bb2542ef59.ctex::
+Props.png::CompressedTexture2D::1477404203879754694::1779431070::1779431122::1::::<><><>0<>0<>bdbe38eabb75d23d041482c08e203000<>res://.godot/imported/Props.png-2999b32bbe9cd51a55be1bc450504032.ctex::
+Tree3.png::CompressedTexture2D::7867964053048527520::1779431070::1779431122::1::::<><><>0<>0<>5c010bfb8763421cf66c1dff2ff868fe<>res://.godot/imported/Tree3.png-2a597b8bdb26604c432a73de67c1df7c.ctex::
+Tree4.png::CompressedTexture2D::2919905848172428125::1779431070::1779431122::1::::<><><>0<>0<>cfb5469390f7ed8d01fa2a48e3db6e9c<>res://.godot/imported/Tree4.png-4079f7defb0b1835768c06ae79b3d2dd.ctex::
+Water Foam.png::CompressedTexture2D::4291617368086461478::1779431070::1779431122::1::::<><><>0<>0<>db66bcdabe337236b256984cedbd401e<>res://.godot/imported/Water Foam.png-8aef7db5aae548fe2b4f070f6394a7ef.ctex::
+Water Rocks_02.png::CompressedTexture2D::3904297735641512789::1779431070::1779431122::1::::<><><>0<>0<>b0418aa92b44fe5185cdf365c1c2f3f5<>res://.godot/imported/Water Rocks_02.png-2e6bd18082989e31f0f60a4f833f2113.ctex::
+::res://assets/environment/props/::1779431070
+::res://assets/environment/props/clouds/::1779431070
+::res://assets/environment/textures/::1779431070
+::res://assets/environment/tilesheets/::1779431122
+NavMeshPainter.png::CompressedTexture2D::1212233456495996055::1779431070::1779431122::1::::<><><>0<>0<>bc65c83748d975146ba19826400db12b<>res://.godot/imported/NavMeshPainter.png-f971d0fc5feb84369c9fc573a7d7880e.ctex::
+Props.png::CompressedTexture2D::4372110041334809551::1779431070::1779431122::1::::<><><>0<>0<>4168438b6098417ef2c8a5b09f2bb58a<>res://.godot/imported/Props.png-609c2e42f7f9893b51b8baa0d7cd7a08.ctex::
+Shadow.png::CompressedTexture2D::5729497411610090136::1779431070::1779431122::1::::<><><>0<>0<>f156dd9bb7b16fc39be057e317a2b384<>res://.godot/imported/Shadow.png-290f02257028e35d7bd77c1999be5f5b.ctex::
+Tilemap_color1.png::CompressedTexture2D::5579438573024949306::1779431070::1779431122::1::::<><><>0<>0<>5175b5f4cfd2bf29cc7550014da6c20c<>res://.godot/imported/Tilemap_color1.png-8461b7ee9fa55b6a75527551bfb3856b.ctex::
+Tilemap_color3.png::CompressedTexture2D::8516012850446814847::1779431070::1779431122::1::::<><><>0<>0<>ea664388c908395cc3096b50475011aa<>res://.godot/imported/Tilemap_color3.png-6005846a9ea70d723896e1981ef813bb.ctex::
+Water Background color.png::CompressedTexture2D::2958026784498486308::1779431070::1779431122::1::::<><><>0<>0<>311e8ea013b8620a3876032c1507a49a<>res://.godot/imported/Water Background color.png-75495a6837ab6d858f33df3a3930b72f.ctex::
+::res://assets/sprites/::1779431123
+player_placeholder.png::CompressedTexture2D::8094126043308555442::1779431070::1779431122::1::::<><><>0<>0<>693191ef2d75e1c9cd0aa4af94525106<>res://.godot/imported/player_placeholder.png-607694e0099b13c74ec004143f3ddec2.ctex::
+Warrior_Blue.png::CompressedTexture2D::6313371520407482256::1779431070::1779431123::1::::<><><>0<>0<>b59cadea9f8da4336a5132edad7d9832<>res://.godot/imported/Warrior_Blue.png-a8294bf214166c999e7ea55a7726ecb5.ctex::
+::res://docs/::1779431070
+::res://docs/superpowers/::1779431070
+::res://docs/superpowers/plans/::1779431733
+2026-05-22-milestone-plan.md::TextFile::-1::1779431070::0::1::::<><><>0<>0<><>::
+::res://docs/superpowers/specs/::1779431070
+2026-05-16-2d-loot-game-design.md::TextFile::-1::1779431070::0::1::::<><><>0<>0<><>::
+::res://scenes/::1779431070
+::res://scenes/maps/::1779539624
+test_map.tscn::PackedScene::3582887245860052043::1779539624::0::1::::<><><>0<>0<><>::uid://bie5je6rbreim::::res://assets/environment/tilesheets/Water Background color.png<>uid://b2e5kttc6yxik::::res://assets/environment/animated_tiles/Water Foam.png<>uid://bvvjhis2bwfa8::::res://assets/environment/animated_tiles/Water Rocks_02.png<>uid://dtlhqtqoblgjn::::res://assets/environment/tilesheets/Tilemap_color3.png<>uid://cnvn8q8oa4cbg::::res://assets/environment/tilesheets/Shadow.png<>uid://clqyskcys36ne::::res://assets/environment/tilesheets/Tilemap_color1.png<>uid://bc7i2ypxwxb1f::::res://assets/environment/animated_tiles/Bushe1.png<>uid://c7c5e2ud242fn::::res://assets/environment/animated_tiles/Bushe2.png<>uid://cwusfnht51dwa::::res://assets/environment/animated_tiles/Bushe3.png<>uid://vbwvp5ao146e::::res://assets/environment/animated_tiles/Props.png<>uid://dkdkhorftoxyu::::res://assets/environment/animated_tiles/Tree3.png<>uid://bhuoomwommc42::::res://assets/environment/animated_tiles/Tree4.png<>uid://dvk7r7aq3qb2m::::res://scenes/player/player.tscn
+::res://scenes/player/::1779434123
+player.gd::GDScript::5006490751115174524::1779434123::0::1::::<>CharacterBody2D<><>0<>0<><>::
+player.tscn::PackedScene::8655846528795710822::1779431070::0::1::::<><><>0<>0<><>::uid://nahfblhmx3rf::::res://scenes/player/player.gd<>uid://cv7ikomqo7p41::::res://assets/sprites/Warrior_Blue.png
