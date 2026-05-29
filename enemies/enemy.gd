@@ -24,6 +24,8 @@ var state: State = State.IDLE
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var animation_playback: AnimationNodeStateMachinePlayback = $AnimationTree["parameters/playback"]
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
+@onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
+
 
 func _ready() -> void:
 	animation_tree.set_active(true)
@@ -37,7 +39,7 @@ func _physics_process(_delta: float) -> void:
 		state = State.ATTACK
 		attack()
 	elif distance_to_player() <= aggro_range:
-		state = State.ATTACK
+		state = State.CHASE
 		move()
 	elif global_position.distance_to(spawn_point) > 32:
 		state = State.RETURN
@@ -47,12 +49,38 @@ func _physics_process(_delta: float) -> void:
 		update_animation()
 		
 func distance_to_player() -> float:
-	var distance: float
-	return distance
-
-func move() -> void:
-	pass
+	if player == null:
+		return INF
+	return global_position.distance_to(player.global_position)
 	
+func move() -> void:
+	if state == State.CHASE:
+		nav_agent.target_position = player.global_position
+	elif state == State.RETURN:
+		nav_agent.target_position = spawn_point
+	var next_path_position:Vector2 = nav_agent.get_next_path_position()
+	velocity = global_position.direction_to(next_path_position) * speed
+	
+	if nav_agent.avoidance_enabled:
+		nav_agent.set_velocity(velocity)
+	else:
+		_on_navigation_agent_2d_velocity_computed(velocity)
+	move_and_slide()
+	
+	# Sprite flipping (only in idle/run)
+	if state == State.IDLE or state == State.CHASE:
+		if velocity.x < -0.01:
+			$Sprite2D.flip_h = true
+		elif velocity.x > 0.01:
+			$Sprite2D.flip_h = false
+			
+# update animation
+	update_animation()
+	
+func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:
+	nav_agent.velocity = safe_velocity
+
+
 func update_animation() -> void:
 	match state:
 		State.IDLE:
@@ -87,3 +115,7 @@ func death() -> void:
 	death_scene.position = global_position + Vector2(0.0,-32.0)
 	get_parent().add_child(death_scene)
 	queue_free()
+
+
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	area.owner.take_damage(attack_damage)

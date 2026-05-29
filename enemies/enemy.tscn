@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://sqrvtabtkhpy"]
 
-[ext_resource type="Script" uid="uid://dk7bl1fqensoa" path="res://enemies/enemy.gd" id="1_7frlh"]
+[ext_resource type="Script" uid="uid://bey82g18wc3ry" path="res://enemies/enemy.gd" id="1_7frlh"]
 [ext_resource type="PackedScene" uid="uid://dx656t0tw103r" path="res://scenes/effects/death.tscn" id="2_a6vjd"]
 [ext_resource type="Texture2D" uid="uid://dk1ldg64ct60b" path="res://assets/sprites/enemies/Warrior_Red.png" id="2_orwns"]
 
@@ -378,6 +378,16 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/attack/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/attack/TimeScale/scale = 1.0
 
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=941092587]
+path_postprocessing = 1
+avoidance_enabled = true
+radius = 48.0
+neighbor_distance = 128.0
+max_speed = 128.0
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(0.7991455, 0.03323669, 0.15641043, 1)
+
 [node name="HurtBox" type="Area2D" parent="." unique_id=1298871686]
 collision_layer = 16
 collision_mask = 0
@@ -402,3 +412,6 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=138200696]
 position = Vector2(1, -27)
 shape = SubResource("RectangleShape2D_a6vjd")
+
+[connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
